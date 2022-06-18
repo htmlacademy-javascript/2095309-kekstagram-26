@@ -18,9 +18,7 @@ function checkLength(checkline, maxLength) {
 
 checkLength('Какая-то строка', 30);
 
-const ELEMENTS_COUNT = 25;
-
-const MESSAGES = [
+const messages = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -29,7 +27,7 @@ const MESSAGES = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-const NAMES_COMMENT = [
+const names = [
   'Антон',
   'Дарья',
   'Вера',
@@ -38,9 +36,6 @@ const NAMES_COMMENT = [
   'Святослав'
 ];
 
-const NUMBER_MIN = 1;   // минимальный номер для адреса картинки
-const NUMBER_MAX = 6;   // максимальный номер для адреса картинки
-
 //Случайный элемент из массива
 const getRandomArrayElement = function (elements) {
   return elements[getRandomInt(0, elements.length - 1)];
@@ -48,30 +43,32 @@ const getRandomArrayElement = function (elements) {
 
 //функция для создания объекта-комментария
 const createComment = function (id) {
+  const NUMBER_MIN = 1;   // минимальный номер для адреса картинки
+  const NUMBER_MAX = 6;   // максимальный номер для адреса картинки
   return {
     id: id,
     avatar: `img/avatar-${getRandomInt(NUMBER_MIN, NUMBER_MAX)}.svg`,
-    message: getRandomArrayElement(MESSAGES),
-    name: getRandomArrayElement(NAMES_COMMENT),
+    message: getRandomArrayElement(messages),
+    name: getRandomArrayElement(names),
   };
 };
 
-const COMMENTS = [];
+const comments = [];
 //функция для создания массива всех возможных объектов-комментариев
-const makeArrayComments = function () {
-  for (let i = 0; i <= MESSAGES.length - 1; i++) {
-    COMMENTS.push(createComment(i));
+const createComments = function () {
+  for (let i = 0; i <= messages.length - 1; i++) {
+    comments.push(createComment(i));
   }
 };
 
 //Функция создает массив комментариев для конкретного фото
 const makeCommentsForPhoto = function () {
-  const COMMENTS_PHOTO = [];
-  const COMMENTS_COUNT = getRandomInt(1, 2);   // у каждой фото 1 или 2 коммента
-  for (let i = 0; i < COMMENTS_COUNT; i++) {
-    COMMENTS_PHOTO.push(getRandomArrayElement(COMMENTS));
+  const photoComments = [];
+  const commentsCount = getRandomInt(1, 2);   // у каждой фото 1 или 2 коммента
+  for (let i = 0; i < commentsCount; i++) {
+    photoComments.push(getRandomArrayElement(comments));
   }
-  return COMMENTS_PHOTO;
+  return photoComments;
 };
 
 //функция для создания объекта-описание фото
@@ -87,12 +84,14 @@ const createPhotoDescription = function (id) {
 
 //функция для создания объектов - описаний фото
 const createPhotos = function () {
-  const PHOTOS = [];
+  const ELEMENTS_COUNT = 25;
+  const photos = [];
   for (let i = 1; i <= ELEMENTS_COUNT; i++) {
-    PHOTOS.push(createPhotoDescription(i));
+    photos.push(createPhotoDescription(i));
   }
-  return PHOTOS;
+  return photos;
 };
 
-makeArrayComments();  //создали массив всех возможных комментов
-createPhotos();  //создали все описания фото. Объекты содержатся в массиве PHOTOS
+createComments();  //создали массив всех возможных комментов
+createPhotos();  //создали все описания фото. Объекты содержатся в массиве photos
+
