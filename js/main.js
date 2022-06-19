@@ -18,7 +18,7 @@ function checkLength(checkline, maxLength) {
 
 checkLength('Какая-то строка', 30);
 
-const messages = [
+const MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -27,7 +27,7 @@ const messages = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-const names = [
+const NAMES = [
   'Антон',
   'Дарья',
   'Вера',
@@ -48,23 +48,25 @@ const createComment = function (id) {
   return {
     id: id,
     avatar: `img/avatar-${getRandomInt(NUMBER_MIN, NUMBER_MAX)}.svg`,
-    message: getRandomArrayElement(messages),
-    name: getRandomArrayElement(names),
+    message: getRandomArrayElement(MESSAGES),
+    name: getRandomArrayElement(NAMES),
   };
 };
 
 const comments = [];
 //функция для создания массива всех возможных объектов-комментариев
 const createComments = function () {
-  for (let i = 0; i <= messages.length - 1; i++) {
+  for (let i = 0; i <= MESSAGES.length - 1; i++) {
     comments.push(createComment(i));
   }
 };
 
 //Функция создает массив комментариев для конкретного фото
 const makeCommentsForPhoto = function () {
+  const NUMBER_MIN = 1;   // минимальное кол-во комментов
+  const NUMBER_MAX = 2;   // максимальное кол-во комментов
   const photoComments = [];
-  const commentsCount = getRandomInt(1, 2);   // у каждой фото 1 или 2 коммента
+  const commentsCount = getRandomInt(NUMBER_MIN, NUMBER_MAX);   // у каждой фото 1 или 2 коммента
   for (let i = 0; i < commentsCount; i++) {
     photoComments.push(getRandomArrayElement(comments));
   }
@@ -73,11 +75,13 @@ const makeCommentsForPhoto = function () {
 
 //функция для создания объекта-описание фото
 const createPhotoDescription = function (id) {
+  const NUMBER_MIN = 15;   // минимальное кол-во лайков
+  const NUMBER_MAX = 200;   // максимальное кол-во лайков
   return {
     id: id,
     url: `photos/${id}.jpg`,
     description: `Описание ${id}`,
-    likes: getRandomInt(15, 200),
+    likes: getRandomInt(NUMBER_MIN, NUMBER_MAX),
     comments: makeCommentsForPhoto(),
   };
 };
