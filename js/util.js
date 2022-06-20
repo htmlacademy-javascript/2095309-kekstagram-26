@@ -15,6 +15,5 @@ function checkLength(checkline, maxLength) {
   return checkline.length <= maxLength;
 }
 
-checkLength('Какая-то строка', 30);
-
 export {getRandomInt};
+export {checkLength};

@@ -72,12 +72,11 @@ const createPhotoDescription = function (id) {
 const createPhotos = function () {
   const ELEMENTS_COUNT = 25;
   const photos = [];
+  createComments();  //создали массив всех возможных комментов
   for (let i = 1; i <= ELEMENTS_COUNT; i++) {
     photos.push(createPhotoDescription(i));
   }
   return photos;
 };
-
-createComments();  //создали массив всех возможных комментов
 
 export {createPhotos};
