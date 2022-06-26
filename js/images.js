@@ -1,26 +1,25 @@
-import {createPhotos} from './data.js';
+const createHtmlImages = function (arrayData) {
+  //блок, в который будем вставлять миниатюры
+  const picturesBlock = document.querySelector('.pictures');
 
-//блок, в который будем вставлять миниатюры
-const blokPictures = document.querySelector('.pictures');
+  //шаблон миниатюры
+  const pictureTemplate = document.querySelector('#picture')
+    .content
+    .querySelector('.picture');
 
-//шаблон миниатюры
-const pictureTemplate = document.querySelector('#picture')
-  .content
-  .querySelector('.picture');
+  //фрагмент для создания элементов-миниатюр
+  const imagesListFragment = document.createDocumentFragment();
 
-//получили массив миниатюр
-const images = createPhotos();
+  arrayData.forEach((image) => {
+  //на основе шаблона создаем элемент ДОМ
+    const pictureElement = pictureTemplate.cloneNode(true);
+    pictureTemplate.querySelector('.picture__img').src = image.url;
+    pictureTemplate.querySelector('.picture__likes').textContent = image.likes;
+    pictureTemplate.querySelector('.picture__comments').textContent = image.comments.length;
+    imagesListFragment.appendChild(pictureElement);
+  });
 
-//фрагмент для создания элементов-миниатюр
-const imagesListFragment = document.createDocumentFragment();
+  picturesBlock.appendChild(imagesListFragment);            //вставляем в документ
+};
 
-images.forEach((image) => {
-//на основе шаблона создаем элемент ДОМ
-  const pictureElement = pictureTemplate.cloneNode(true);
-  pictureTemplate.querySelector('.picture__img').src = image.url;
-  pictureTemplate.querySelector('.picture__likes').textContent = image.likes;
-  pictureTemplate.querySelector('.picture__comments').textContent = image.comments.length;
-  imagesListFragment.appendChild(pictureElement);
-});
-
-blokPictures.appendChild(imagesListFragment);                //вставляем в документ
+export {createHtmlImages};
