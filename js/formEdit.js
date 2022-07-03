@@ -1,10 +1,11 @@
 const uploadFile = document.querySelector('#upload-file');          //поле Загрузить
-const imgUpload = document.querySelector('.img-upload__overlay');  //форма редактирования изображения
 const body = document.querySelector('body');
+const imgUpload = document.querySelector('.img-upload__overlay');  //элемент для скрытия формы
 const uploadCancel = imgUpload.querySelector('#upload-cancel');    //Кнопка закрытия формы редактирования изображения
 const hashtags = document.querySelector('[name="hashtags"]');     //поле хештега
 const description = imgUpload.querySelector('[name="description"]'); //поле комментария
 
+const imgForm = document.querySelector('.img-upload__form');    //форма редактирования изображения
 const pristine = new Pristine(imgUpload);
 
 const closeForm = function () {
@@ -33,7 +34,7 @@ const onUploadFileChange = function () {
   document.addEventListener('keydown', onImgUploadKeydown);
 };
 
-const createFormEdit = function () {
+const showFormEdit = function () {
   //добавить событие при загрузке файла
   uploadFile.addEventListener('change', onUploadFileChange);
 
@@ -44,19 +45,36 @@ const createFormEdit = function () {
   //добавляем событие при закрытии крестиком
   uploadCancel.addEventListener('click',onImgUploadClick);
 
-  //валидация
-  imgUpload.addEventListener('submit', (evt) => {
-    //console.log(evt);
-    evt.preventDefault();
+  //создаем пользовательский валидатор на поле хештег (в разметке добавили класс по умолчанию form-group )
+  const re = /^#[a-zA-ZА-Яа-яЁё0-9]{1,19}$/;
 
-    const isValid = pristine.validate();
-    if (isValid) {
-      //console.log('Можно отправлять');
-    } else {
-      //console.log('Форма невалидна');
+  pristine.addValidator(hashtags, (value) => {
+    const arrayHashtags = value.split(' ');
+    if (arrayHashtags.filter(Boolean).length > 5) {
+      return false;
     }
+    return true;
+  }, 'не может быть более 5 хештегов',3,false);
 
+  pristine.addValidator(hashtags, (value) => {
+    const arrayHashtags = value.split(' ');
+    const arrayHashtagsFilter = arrayHashtags.filter(Boolean);
+
+    for (let i = 0; i <= arrayHashtagsFilter.length - 1; i++) {
+      if (!(re.test(arrayHashtagsFilter[i])))  {
+        return false;
+      }
+    }
+    return true;
+  }, 'Неверный хештег',2,false);
+
+  imgForm.addEventListener('submit', (evt) => {
+    const isValid = pristine.validate();
+    if (!isValid) {
+      evt.preventDefault();
+    }
   });
 };
-export {createFormEdit};
+export {showFormEdit};
+
 
