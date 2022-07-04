@@ -5,7 +5,7 @@ const uploadCancelButton = imgUploadOverlay.querySelector('#upload-cancel'); //�
 const hashtagsField = document.querySelector('[name="hashtags"]');          //поле хештега
 const descriptionField = imgUploadOverlay.querySelector('[name="description"]'); //поле комментария
 
-const imgForm = document.querySelector('.img-upload__form');    //форма редактирования изображения
+const imgUploadForm = document.querySelector('.img-upload__form');    //форма редактирования изображения
 const pristine = new Pristine(imgUploadOverlay);
 
 const initFormEdit = function () {
@@ -46,13 +46,17 @@ const initFormEdit = function () {
   //создаем пользовательский валидатор на поле хештег (в разметке добавили класс по умолчанию form-group )
   const re = /^#[a-zA-ZА-Яа-яЁё0-9]{1,19}$/;
 
+  const reportAnError = function () {
+    return `не может быть более ${MAX_HASHTAGS} хештегов`;
+  };
+
   pristine.addValidator(hashtagsField, (value) => {
     const hashtags = value.split(' ');
     if (hashtags.filter(Boolean).length > MAX_HASHTAGS) {
       return false;
     }
     return true;
-  }, 'не может быть более 5 хештегов',3,false);
+  }, reportAnError(),3,false);
 
   pristine.addValidator(hashtagsField, (value) => {
     const hashtags = value.split(' ');
@@ -73,7 +77,7 @@ const initFormEdit = function () {
   uploadCancelButton.addEventListener('click',onImgUploadClick);
 
   //добавляем событие на отправку формы
-  imgForm.addEventListener('submit', (evt) => {
+  imgUploadForm.addEventListener('submit', (evt) => {
     const isValid = pristine.validate();
     if (!isValid) {
       evt.preventDefault();
