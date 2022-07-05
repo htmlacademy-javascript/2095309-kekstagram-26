@@ -6,7 +6,7 @@ const hashtagsField = document.querySelector('[name="hashtags"]');          //п
 const descriptionField = imgUploadOverlay.querySelector('[name="description"]'); //поле комментария
 
 const imgUploadForm = document.querySelector('.img-upload__form');    //форма редактирования изображения
-const pristine = new Pristine(imgUploadOverlay);
+const pristine = new Pristine(imgUploadForm);
 
 const initFormEdit = function () {
   const MAX_HASHTAGS = 5;
@@ -21,7 +21,7 @@ const initFormEdit = function () {
   //обработчик закрытия ESC
   const onImgUploadKeydown = function (evt) {
     if (evt.key === 'Escape') {
-      if (hashtagsField !== document.activeElement) {
+      if (hashtagsField !== document.activeElement && descriptionField !== document.activeElement) {
         closeForm();
         document.removeEventListener('keydown', onImgUploadKeydown);
       }
@@ -60,15 +60,33 @@ const initFormEdit = function () {
 
   pristine.addValidator(hashtagsField, (value) => {
     const hashtags = value.split(' ');
-    const arrayHashtagsFilter = hashtags.filter(Boolean);
+    const hashtagsFilter = hashtags.filter(Boolean);
+    const uniqueHashtags = hashtagsFilter.filter((item, index) => hashtagsFilter.indexOf(item) === index);
+    if (hashtagsFilter.length !== uniqueHashtags.length) {
+      return false;
+    }
+    return true;
+  }, 'хэштеги не должны повторяться',1,false);
 
-    for (let i = 0; i <= arrayHashtagsFilter.length - 1; i++) {
-      if (!(re.test(arrayHashtagsFilter[i])))  {
+  pristine.addValidator(hashtagsField, (value) => {
+    const hashtags = value.split(' ');
+    const hashtagsFilter = hashtags.filter(Boolean);
+
+    for (let i = 0; i <= hashtagsFilter.length - 1; i++) {
+      if (!(re.test(hashtagsFilter[i])))  {
         return false;
       }
     }
     return true;
   }, 'Неверный хештег',2,false);
+
+  //создаем пользовательский валидатор на поле комментария (в разметке добавили класс по умолчанию form-group )
+  pristine.addValidator(descriptionField, (value) => {
+    if (value.length > 140) {
+      return false;
+    }
+    return true;
+  }, 'Длина строки должна быть не более 140 символов',1,false);
 
   //добавить событие при загрузке файла
   uploadFile.addEventListener('change', onUploadFileChange);
