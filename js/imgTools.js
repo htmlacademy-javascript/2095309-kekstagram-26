@@ -1,16 +1,16 @@
-const scaleSmallerElement = document.querySelector('.scale__control--smaller');    //+
-const scaleBiggerElement = document.querySelector('.scale__control--bigger');      //-
-const scaleValueElement = document.querySelector('.scale__control--value');        //
+const scaleSmallerButton = document.querySelector('.scale__control--smaller');    //+
+const scaleBiggerButton = document.querySelector('.scale__control--bigger');      //-
+const scaleValue = document.querySelector('.scale__control--value');        //
 
-const effectsListElement = document.querySelector('.effects__list');      //список фильтров
-const imgUploadElement = document.querySelector('.img-upload__preview'); //div Для превью
-const previewElement = imgUploadElement.querySelector('img');            // превью
+const effectsList = document.querySelector('.effects__list');      //список фильтров
+const imgUploadPreview = document.querySelector('.img-upload__preview'); //div Для превью
+const preview = imgUploadPreview.querySelector('img');                   // превью
 
-const sliderElement = document.querySelector('.effect-level__slider');
-const sliderValueElement = document.querySelector('.effect-level__value');     //поле для значения уровня слайдера
+const slider = document.querySelector('.effect-level__slider');
+const effectSliderValue = document.querySelector('.effect-level__value');     //поле для значения уровня слайдера
 
 //значения слайдера для разных фильтров
-const filtrs = {
+const filters = {
   chrome: {
     range: {min: 0,  max: 1},
     start: 1,
@@ -98,49 +98,53 @@ const filtrs = {
   }
 };
 
-const editImage = function () {
-  const updateSliderValueElement = (value) => {sliderValueElement.value = value;};  // ф-ия заполнения поля значением слайдера
+const initImageEdit = function () {
+  // ф-ия заполнения поля значением слайдера
+  const updateEffectSliderValue = function (value) {
+    const re = /[^0123456789.]{1,}/;
+    const valueNumber = parseFloat(String(value).replace(re,'').replace(re,''));
+    effectSliderValue.value = valueNumber;
+  };
 
   //----------------------Масштаб-----------------------------------------------------
-  const getPercent = function (step) {
+  const setPercent = function (step) {
     const MIN_SCALE = 25;
     const MAX_SCALE = 100;
-    let scale = Number(scaleValueElement.value.slice(0,scaleValueElement.value.length-1));
+    let scale = Number(scaleValue.value.slice(0,scaleValue.value.length-1));
     if ((step < 0 && scale > MIN_SCALE) || (step > 0 && scale < MAX_SCALE)) {
       scale = scale + step;
-      scaleValueElement.value = `${scale}%`;
-      previewElement.style.transform = `scale(${scale/100})`;
+      scaleValue.value = `${scale}%`;
+      preview.style.transform = `scale(${scale/100})`;
     }
   };
-  scaleSmallerElement.addEventListener('click', () =>  getPercent(-25));
-  scaleBiggerElement.addEventListener('click',() => getPercent(25));
+  scaleSmallerButton.addEventListener('click', () =>  setPercent(-25));
+  scaleBiggerButton.addEventListener('click',() => setPercent(25));
 
   //-----------------------Выбор фильтра-----------------------------------------------
   //обработчик при выборе нового фильтра
   const onFilterChange = function (evt) {
     //ставим класс нового фильтра картинке
     const currentClass = `effects__preview--${evt.target.value}`;
-    previewElement.className = currentClass;
+    preview.className = currentClass;
 
     if (evt.target.value !== 'none') {
-      sliderElement.classList.remove('hidden');
+      slider.classList.remove('hidden');
 
       //Обновляем слайдер
-      sliderElement.noUiSlider.updateOptions(filtrs[evt.target.value]);
-      previewElement.style.filter = sliderElement.noUiSlider.get();       //устанавливаем фильтр картинке стилями (в слайдере возвращается готовый стиль)
+      slider.noUiSlider.updateOptions(filters[evt.target.value]);
+      preview.style.filter = slider.noUiSlider.get();       //устанавливаем фильтр картинке стилями (в слайдере возвращается готовый стиль)
 
     } else {
-      previewElement.style = '';
-      updateSliderValueElement(NaN);
-      sliderElement.classList.add('hidden');                              //скрываем слайдер
+      preview.style = '';
+      updateEffectSliderValue(0);
+      slider.classList.add('hidden');                              //скрываем слайдер
     }
-
   };
 
-  effectsListElement.addEventListener('change', onFilterChange);        //подписывемся на список фильтров (делегирование)
+  effectsList.addEventListener('change', onFilterChange);        //подписывемся на список фильтров (делегирование)
 
   //------------------слайдер-----------------------------------------------------
-  noUiSlider.create(sliderElement, {
+  noUiSlider.create(slider, {
     range: {
       min: 0,
       max: 100,
@@ -151,18 +155,17 @@ const editImage = function () {
   });
 
   //подписка на событие изменения слайдера
-  sliderElement.noUiSlider.on('update', () => {
-    const sliderValue = sliderElement.noUiSlider.get();
-    updateSliderValueElement(sliderValue);     //заполняем поле для передачи фильтра
+  slider.noUiSlider.on('update', () => {
+    const sliderValue = slider.noUiSlider.get();
+    updateEffectSliderValue(sliderValue);     //заполняем поле для передачи фильтра
 
-    const currentClass = previewElement.className.replace('effects__preview--','');
-    if (currentClass !== '') {
-      previewElement.style.filter = sliderValue;
+    const currentClass = preview.className.replace('effects__preview--','');
+    if (currentClass === 'none' || currentClass === '') {
+      updateEffectSliderValue(0);
     }
   });
 
-  sliderElement.classList.add('hidden');        //при открытии формы слайдер скрыт
-
+  slider.classList.add('hidden');        //при открытии формы слайдер скрыт
 };
 
-export {editImage};
+export {initImageEdit};
