@@ -97,15 +97,26 @@ const filters = {
     }
   }
 };
+// --------ф-ия заполнения поля значением слайдера--------------------------------
+const updateEffectSliderValue = function (value) {
+  const re = /[^0123456789.]{1,}/;
+  const valueNumber = parseFloat(String(value).replace(re,'').replace(re,''));
+  effectSliderValue.value = valueNumber;
+};
+
+//---------------------сброс фильтров-----------------------------------------------
+const removeFilters = function () {
+  scaleValue.value = '100%';
+  preview.style.transform = 'scale(1)';
+
+  preview.style = '';
+  preview.className = 'effects__preview--none';
+  effectsList.querySelectorAll('input[type="radio"]')[0].checked = true;
+  updateEffectSliderValue(0);
+  slider.classList.add('hidden');
+};
 
 const initImageEdit = function () {
-  // ф-ия заполнения поля значением слайдера
-  const updateEffectSliderValue = function (value) {
-    const re = /[^0123456789.]{1,}/;
-    const valueNumber = parseFloat(String(value).replace(re,'').replace(re,''));
-    effectSliderValue.value = valueNumber;
-  };
-
   //----------------------Масштаб-----------------------------------------------------
   const setPercent = function (step) {
     const MIN_SCALE = 25;
@@ -139,9 +150,10 @@ const initImageEdit = function () {
       updateEffectSliderValue(0);
       slider.classList.add('hidden');                              //скрываем слайдер
     }
+
   };
 
-  effectsList.addEventListener('change', onFilterChange);        //подписывемся на список фильтров (делегирование)
+  effectsList.addEventListener('change', onFilterChange);        //подписывемся на изменение в списке фильтров (делегирование)
 
   //------------------слайдер-----------------------------------------------------
   noUiSlider.create(slider, {
@@ -165,7 +177,7 @@ const initImageEdit = function () {
     }
   });
 
-  slider.classList.add('hidden');        //при открытии формы слайдер скрыт
+  removeFilters();
 };
 
-export {initImageEdit};
+export {initImageEdit, removeFilters};

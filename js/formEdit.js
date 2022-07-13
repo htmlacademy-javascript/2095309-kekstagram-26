@@ -1,3 +1,6 @@
+import {sendData} from  './api.js';
+import {removeFilters} from  './imgTools.js';
+
 const uploadFile = document.querySelector('#upload-file');                    //поле Загрузить
 const body = document.querySelector('body');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');     //элемент для скрытия формы
@@ -6,26 +9,50 @@ const hashtagsField = document.querySelector('[name="hashtags"]');          //п
 const descriptionField = imgUploadOverlay.querySelector('[name="description"]'); //поле комментария
 
 const imgUploadForm = document.querySelector('.img-upload__form');    //форма редактирования изображения
+const submitButton = imgUploadForm.querySelector('#upload-submit');   //кнопка отправки
 const pristine = new Pristine(imgUploadForm);
+
+//блокировка - разблокировка кнопки отправки формы
+const blockSubmitButton = function () {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Сохраняю...';
+};
+const unblockSubmitButton = function () {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Сохранить';
+};
+
 
 const initFormEdit = function () {
   const MAX_HASHTAGS = 5;
 
-  const closeForm = function () {
+  const closeForm = function (save) {
     imgUploadOverlay.classList.add('hidden');
     body.classList.remove('modal-open');
-    uploadFile.value='';
-    hashtagsField.value='';
-    descriptionField.value='';
+
+    if (!save) {
+      uploadFile.value='';
+      hashtagsField.value='';
+      descriptionField.value='';
+      removeFilters();
+    }
+
   };
   //обработчик закрытия ESC
   const onImgUploadKeydown = function (evt) {
     if (evt.key === 'Escape') {
       if (hashtagsField !== document.activeElement && descriptionField !== document.activeElement) {
-        closeForm();
+        closeForm(false);
         document.removeEventListener('keydown', onImgUploadKeydown);
       }
     }
+  };
+
+  //закрыть форму и удалить обработчик на ESC
+  const closeUserModal = function (save) {
+    closeForm(save);
+    document.removeEventListener('keydown', onImgUploadKeydown);
+    unblockSubmitButton();
   };
 
   //Обработчик события при загрузке файла
@@ -39,8 +66,7 @@ const initFormEdit = function () {
 
   //обработчик события для закрытия крестиком
   const onImgUploadClick = function () {
-    closeForm();
-    document.removeEventListener('keydown', onImgUploadKeydown); //куда поставить эту команду?
+    closeUserModal(false);
   };
 
   //создаем пользовательский валидатор на поле хештег (в разметке добавили класс по умолчанию form-group )
@@ -96,9 +122,12 @@ const initFormEdit = function () {
 
   //добавляем событие на отправку формы
   imgUploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
     const isValid = pristine.validate();
-    if (!isValid) {
-      evt.preventDefault();
+    if (isValid)  {
+      blockSubmitButton();
+      const formData = new FormData(evt.target);
+      sendData(closeUserModal,unblockSubmitButton,formData);  //showMessage
     }
   });
 
