@@ -17,24 +17,14 @@ function checkLength(checkline, maxLength) {
 
 //---------------плашка-сообщение с таймером----------------------------
 const ALERT_SHOW_TIME = 5000;
+const alertMessage = document.querySelector('.alert-message');
+
 function showAlert (message)  {
-  const alertContainer = document.createElement('div');
-  alertContainer.style.zIndex = '100';
-  alertContainer.style.position = 'absolute';
-  alertContainer.style.left = '0';
-  alertContainer.style.top = '0';
-  alertContainer.style.right = '0';
-  alertContainer.style.padding = '10px 3px';
-  alertContainer.style.fontSize = '30px';
-  alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = 'red';
-
-  alertContainer.textContent = message;
-
-  document.body.append(alertContainer);
+  alertMessage.textContent = message;
+  alertMessage.classList.remove('hidden');
 
   setTimeout(() => {
-    alertContainer.remove();
+    alertMessage.classList.add('hidden');
   }, ALERT_SHOW_TIME);
 }
 
@@ -59,7 +49,6 @@ function showMessage (element) {
       successElement.remove();
     }
   };
-  //successElement.querySelector('.success__button').addEventListener('click',onClick);
   successElement.querySelector(`.${element}__button`).addEventListener('click',onClick);   //добавляем событие при закрытии крестиком
   document.addEventListener('keydown',onShowSuccessKeydown);                            //добавляем событие при закрытии ESC
   document.addEventListener('click',onClick);                                           //добавляем событие при закрытии мышкой по экрану

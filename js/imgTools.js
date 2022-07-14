@@ -107,8 +107,6 @@ const updateEffectSliderValue = function (value) {
 //---------------------сброс фильтров-----------------------------------------------
 const removeFilters = function () {
   scaleValue.value = '100%';
-  preview.style.transform = 'scale(1)';
-
   preview.style = '';
   preview.className = 'effects__preview--none';
   effectsList.querySelectorAll('input[type="radio"]')[0].checked = true;
