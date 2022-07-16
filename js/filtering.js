@@ -17,14 +17,14 @@ const clearActive = function () {
 const sortDesc = (photo1, photo2) => parseFloat(photo2.comments.length) - parseFloat(photo1.comments.length);
 
 const initFilters = function (photos, cb) {
-  const onDiscusseClick = function (cb1, sortingFunction, evt) {
+  const onFilterClick = function (cb1, sortingFunction, evt) {
     const resultingArray = sortingFunction();
     cb1(resultingArray);
     clearActive();
     evt.target.classList.add('img-filters__button--active');
   };
   //обработчик обсуждаемых
-  filterDiscussedButton.addEventListener('click', (evt) => onDiscusseClick(cb, () => photos.slice().sort(sortDesc),evt));
+  filterDiscussedButton.addEventListener('click', (evt) => onFilterClick(cb, () => photos.slice().sort(sortDesc),evt));
 
   //функция возвращает MAX случайных элементов массива
   const sortRandomly = function (elements) {
@@ -41,10 +41,10 @@ const initFilters = function (photos, cb) {
     return resultingArray;
   };
   //обработчик случайных
-  filterRandomButton.addEventListener('click', (evt) => onDiscusseClick(cb, () => sortRandomly(photos),evt));
+  filterRandomButton.addEventListener('click', (evt) => onFilterClick(cb, () => sortRandomly(photos),evt));
 
   //обработчик по умолчанию
-  filterDefaultButton.addEventListener('click', (evt) => onDiscusseClick(cb, () => photos, evt));
+  filterDefaultButton.addEventListener('click', (evt) => onFilterClick(cb, () => photos, evt));
 
 };
 
