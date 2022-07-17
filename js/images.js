@@ -1,6 +1,17 @@
+//блок, в который будем вставлять миниатюры
+const picturesBlock = document.querySelector('.pictures');
+
+
 const createHtmlImages = function (arrayData) {
-  //блок, в который будем вставлять миниатюры
-  const picturesBlock = document.querySelector('.pictures');
+
+  //удаляем фотки
+  const clearPicturesBlock = function () {
+    const picture = picturesBlock.querySelectorAll('a');
+    for (const element of picture) {
+      element.remove();
+    }
+  };
+  clearPicturesBlock();
 
   //шаблон миниатюры
   const pictureTemplate = document.querySelector('#picture')

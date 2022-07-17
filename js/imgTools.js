@@ -168,6 +168,7 @@ const initImageEdit = function () {
   slider.noUiSlider.on('update', () => {
     const sliderValue = slider.noUiSlider.get();
     updateEffectSliderValue(sliderValue);     //заполняем поле для передачи фильтра
+    preview.style.filter = sliderValue;
 
     const currentClass = preview.className.replace('effects__preview--','');
     if (currentClass === 'none' || currentClass === '') {
