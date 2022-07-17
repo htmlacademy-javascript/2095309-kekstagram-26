@@ -4,27 +4,21 @@ import {getRandomInt} from  './util.js';
 const filterDiscussedButton = document.querySelector('#filter-discussed');    //обсуждаемые
 const filterRandomButton = document.querySelector('#filter-random');          //случайные
 const filterDefaultButton = document.querySelector('#filter-default');        //по умолчанию
-const filterButton = document.querySelectorAll('.img-filters__button');       //все фильтры
-
-// функция: убрать класс активности у всех фильтров
-const clearActive = function () {
-  for (const element of filterButton) {
-    element.classList.remove('img-filters__button--active');
-  }
-};
 
 //функция для сортировки по уменьшению комментов
-const sortDesc = (photo1, photo2) => parseFloat(photo2.comments.length) - parseFloat(photo1.comments.length);
+const sortDesc = (photo1, photo2) => photo2.comments.length - photo1.comments.length;
 
 const initFilters = function (photos, cb) {
-  const onFilterClick = function (cb1, sortingFunction, evt) {
+
+  document.querySelector('.img-filters--inactive').classList.remove('img-filters--inactive');
+  const onFilterClick = function (evt, drawPhoto, sortingFunction) {
     const resultingArray = sortingFunction();
-    cb1(resultingArray);
-    clearActive();
+    drawPhoto(resultingArray);
+    document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');  //снимаем выделение у предыдущего фильтра
     evt.target.classList.add('img-filters__button--active');
   };
   //обработчик обсуждаемых
-  filterDiscussedButton.addEventListener('click', (evt) => onFilterClick(cb, () => photos.slice().sort(sortDesc),evt));
+  filterDiscussedButton.addEventListener('click', (evt) => onFilterClick(evt, cb, () => photos.slice().sort(sortDesc)));
 
   //функция возвращает MAX случайных элементов массива
   const sortRandomly = function (elements) {
@@ -33,7 +27,7 @@ const initFilters = function (photos, cb) {
     const arr =[];
     while (arr.length < MAX) {
       const randomNumber = getRandomInt(0, lengthPhotos);
-      if (! arr.includes(randomNumber)) {
+      if (!arr.includes(randomNumber)) {
         arr.push(randomNumber);
       }
     }
@@ -41,10 +35,10 @@ const initFilters = function (photos, cb) {
     return resultingArray;
   };
   //обработчик случайных
-  filterRandomButton.addEventListener('click', (evt) => onFilterClick(cb, () => sortRandomly(photos),evt));
+  filterRandomButton.addEventListener('click', (evt) => onFilterClick(evt, cb, () => sortRandomly(photos)));
 
   //обработчик по умолчанию
-  filterDefaultButton.addEventListener('click', (evt) => onFilterClick(cb, () => photos, evt));
+  filterDefaultButton.addEventListener('click', (evt) => onFilterClick(evt, cb, () => photos));
 
 };
 
