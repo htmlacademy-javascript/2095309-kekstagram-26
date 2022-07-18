@@ -1,6 +1,6 @@
 import {createHtmlImages} from './images.js';              //отрисовка фото в ДОМ
-import {initFormEdit} from  './formEdit.js';
-import {initImageEdit} from  './imgTools.js';
+import {initFormEdit} from  './form-edit.js';
+import {initImageEdit} from  './img-tools.js';
 import {showAlert, debounce} from  './util.js';            //плашка с ошибкой
 import {getData} from  './api.js';
 import {initFilters} from  './filtering.js';

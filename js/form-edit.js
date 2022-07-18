@@ -1,6 +1,6 @@
 import {sendData} from  './api.js';
-import {removeFilters} from  './imgTools.js';
-import {choosePhoto} from  './uploadPhoto.js';
+import {removeFilters} from  './img-tools.js';
+import {choosePhoto} from  './upload-photo.js';
 
 const uploadFile = document.querySelector('#upload-file');                    //поле Загрузить
 const body = document.querySelector('body');
