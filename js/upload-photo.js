@@ -3,7 +3,7 @@ const preview = document.querySelector('#img_preview');                         
 
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
-const choosePhoto = function () {
+const initChoosePhoto = function () {
   //подпиываемся на событие выбора файла
   fileChooser.addEventListener('change', () => {
     const file = fileChooser.files[0];
@@ -16,5 +16,5 @@ const choosePhoto = function () {
   });
 };
 
-export {choosePhoto};
+export {initChoosePhoto};
 
