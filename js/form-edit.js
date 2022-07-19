@@ -1,5 +1,6 @@
 import {sendData} from  './api.js';
-import {removeFilters} from  './imgTools.js';
+import {removeFilters} from  './img-tools.js';
+import {initChoosePhoto} from  './upload-photo.js';
 
 const uploadFile = document.querySelector('#upload-file');                    //поле Загрузить
 const body = document.querySelector('body');
@@ -25,6 +26,8 @@ const unblockSubmitButton = function () {
 
 const initFormEdit = function () {
   const MAX_HASHTAGS = 5;
+
+  initChoosePhoto();                        //создаем обработчик для загрузки своего фото
 
   const closeForm = function (save) {
     imgUploadOverlay.classList.add('hidden');
