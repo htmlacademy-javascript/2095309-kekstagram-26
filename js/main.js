@@ -7,17 +7,10 @@ import {initFilters} from  './filtering.js';
 
 const RERENDER_DELAY = 500;
 
-//асинхронная функция для отрисовки фото, а потом появление фильтров
-const screen = async (offers) => {
-  const response = await createHtmlImages(offers);
-  if (response.ok) {
-    initFilters(offers, debounce(createHtmlImages,RERENDER_DELAY));
-  }
-};
-
-getData((offers) => {                //получение данных с сервера и отрисовка экрана
-  screen(offers);
-},showAlert);
+getData((offers) => {
+  createHtmlImages(offers);
+  initFilters(offers, debounce(createHtmlImages,RERENDER_DELAY));
+},showAlert);                         //загружаем фото с сервера
 
 initFormEdit();                     //инициализируем форму для загрузки и редактирования фото
 initImageEdit();                   //создаем функционал для редактирования фото
