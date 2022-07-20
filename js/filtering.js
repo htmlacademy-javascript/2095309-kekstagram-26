@@ -1,5 +1,7 @@
 import {getRandomInt} from  './util.js';
 
+const MAX = 10;            //количество случайных фото
+
 //создаем обаботчики на фильтр
 const filterDiscussedButton = document.querySelector('#filter-discussed');    //обсуждаемые
 const filterRandomButton = document.querySelector('#filter-random');          //случайные
@@ -22,7 +24,6 @@ const initFilters = function (photos, cb) {
 
   //функция возвращает MAX случайных элементов массива
   const sortRandomly = function (elements) {
-    const MAX = 10;
     const lengthPhotos = elements.length - 1;
     const arr =[];
     while (arr.length < MAX) {

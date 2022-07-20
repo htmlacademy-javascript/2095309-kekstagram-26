@@ -9,6 +9,9 @@ const preview = imgUploadPreview.querySelector('img');                   // пр
 const slider = document.querySelector('.effect-level__slider');
 const effectSliderValue = document.querySelector('.effect-level__value');     //поле для значения уровня слайдера
 
+const MIN_SCALE = 25;
+const MAX_SCALE = 100;
+
 //значения слайдера для разных фильтров
 const filters = {
   chrome: {
@@ -117,8 +120,6 @@ const removeFilters = function () {
 const initImageEdit = function () {
   //----------------------Масштаб-----------------------------------------------------
   const setPercent = function (step) {
-    const MIN_SCALE = 25;
-    const MAX_SCALE = 100;
     let scale = Number(scaleValue.value.slice(0,scaleValue.value.length-1));
     if ((step < 0 && scale > MIN_SCALE) || (step > 0 && scale < MAX_SCALE)) {
       scale = scale + step;

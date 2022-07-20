@@ -2,6 +2,9 @@ import {sendData} from  './api.js';
 import {removeFilters} from  './img-tools.js';
 import {initChoosePhoto} from  './upload-photo.js';
 
+const MAX_HASHTAGS = 5;
+const COMMENT_LENGTH = 140;
+
 const uploadFile = document.querySelector('#upload-file');                    //поле Загрузить
 const body = document.querySelector('body');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');     //элемент для скрытия формы
@@ -25,7 +28,6 @@ const unblockSubmitButton = function () {
 
 
 const initFormEdit = function () {
-  const MAX_HASHTAGS = 5;
 
   initChoosePhoto();                        //создаем обработчик для загрузки своего фото
 
@@ -111,7 +113,7 @@ const initFormEdit = function () {
 
   //создаем пользовательский валидатор на поле комментария (в разметке добавили класс по умолчанию form-group )
   pristine.addValidator(descriptionField, (value) => {
-    if (value.length > 140) {
+    if (value.length > COMMENT_LENGTH) {
       return false;
     }
     return true;

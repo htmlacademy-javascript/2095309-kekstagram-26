@@ -1,4 +1,6 @@
-//https://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
+const ALERT_SHOW_TIME = 5000;
+
+//Источник - https://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
 function getRandomInt(min, max) {
   min = Math.abs(min);
   max = Math.abs(max);
@@ -16,7 +18,6 @@ function checkLength(checkline, maxLength) {
 }
 
 //---------------плашка-сообщение с таймером----------------------------
-const ALERT_SHOW_TIME = 5000;
 const alertMessage = document.querySelector('.alert-message');
 
 function showAlert (message)  {

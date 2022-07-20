@@ -1,5 +1,10 @@
 import {getRandomInt} from './util.js';
 
+const COMMENTS_NUMBER_MIN = 1;   // минимальное кол-во комментов
+const COMMENTS_NUMBER_MAX = 2;   // максимальное кол-во комментов
+const ADDRESS_NUMBER_MIN = 1;   // минимальный номер для адреса картинки
+const ADDRESS_NUMBER_MAX = 6;   // максимальный номер для адреса картинки
+
 const MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -25,11 +30,9 @@ const getRandomArrayElement = function (elements) {
 
 //функция для создания объекта-комментария
 const createComment = function (id) {
-  const NUMBER_MIN = 1;   // минимальный номер для адреса картинки
-  const NUMBER_MAX = 6;   // максимальный номер для адреса картинки
   return {
     id: id,
-    avatar: `img/avatar-${getRandomInt(NUMBER_MIN, NUMBER_MAX)}.svg`,
+    avatar: `img/avatar-${getRandomInt(ADDRESS_NUMBER_MIN, ADDRESS_NUMBER_MAX)}.svg`,
     message: getRandomArrayElement(MESSAGES),
     name: getRandomArrayElement(NAMES),
   };
@@ -45,10 +48,9 @@ const createComments = function () {
 
 //Функция создает массив комментариев для конкретного фото
 const makeCommentsForPhoto = function () {
-  const NUMBER_MIN = 1;   // минимальное кол-во комментов
-  const NUMBER_MAX = 2;   // максимальное кол-во комментов
+  // const NUMBER_MAX = 2;   // максимальное кол-во комментов
   const photoComments = [];
-  const commentsCount = getRandomInt(NUMBER_MIN, NUMBER_MAX);   // у каждой фото 1 или 2 коммента
+  const commentsCount = getRandomInt(COMMENTS_NUMBER_MIN, COMMENTS_NUMBER_MAX);   // у каждой фото 1 или 2 коммента
   for (let i = 0; i < commentsCount; i++) {
     photoComments.push(getRandomArrayElement(comments));
   }
