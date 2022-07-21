@@ -1,5 +1,12 @@
 import {getRandomInt} from './util.js';
 
+const COMMENTS_MIN = 1;   // минимальное кол-во комментов
+const COMMENTS_MAX = 2;   // максимальное кол-во комментов
+const ADDRESS_MIN = 1;   // минимальный номер для адреса картинки
+const ADDRESS_MAX = 6;   // максимальный номер для адреса картинки
+const LIKE_MIN = 15;   // минимальное кол-во лайков
+const LIKE_MAX = 200;   // максимальное кол-во лайков
+
 const MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -25,11 +32,9 @@ const getRandomArrayElement = function (elements) {
 
 //функция для создания объекта-комментария
 const createComment = function (id) {
-  const NUMBER_MIN = 1;   // минимальный номер для адреса картинки
-  const NUMBER_MAX = 6;   // максимальный номер для адреса картинки
   return {
     id: id,
-    avatar: `img/avatar-${getRandomInt(NUMBER_MIN, NUMBER_MAX)}.svg`,
+    avatar: `img/avatar-${getRandomInt(ADDRESS_MIN, ADDRESS_MAX)}.svg`,
     message: getRandomArrayElement(MESSAGES),
     name: getRandomArrayElement(NAMES),
   };
@@ -45,10 +50,8 @@ const createComments = function () {
 
 //Функция создает массив комментариев для конкретного фото
 const makeCommentsForPhoto = function () {
-  const NUMBER_MIN = 1;   // минимальное кол-во комментов
-  const NUMBER_MAX = 2;   // максимальное кол-во комментов
   const photoComments = [];
-  const commentsCount = getRandomInt(NUMBER_MIN, NUMBER_MAX);   // у каждой фото 1 или 2 коммента
+  const commentsCount = getRandomInt(COMMENTS_MIN, COMMENTS_MAX);
   for (let i = 0; i < commentsCount; i++) {
     photoComments.push(getRandomArrayElement(comments));
   }
@@ -57,13 +60,11 @@ const makeCommentsForPhoto = function () {
 
 //функция для создания объекта-описание фото
 const createPhotoDescription = function (id) {
-  const NUMBER_MIN = 15;   // минимальное кол-во лайков
-  const NUMBER_MAX = 200;   // максимальное кол-во лайков
   return {
     id: id,
     url: `photos/${id}.jpg`,
     description: `Описание ${id}`,
-    likes: getRandomInt(NUMBER_MIN, NUMBER_MAX),
+    likes: getRandomInt(LIKE_MIN, LIKE_MAX),
     comments: makeCommentsForPhoto(),
   };
 };
