@@ -14,8 +14,8 @@ const initFilters = function (photos, cb) {
 
   document.querySelector('.img-filters--inactive').classList.remove('img-filters--inactive');
   const onFilterClick = function (evt, drawPhoto, sortingFunction) {
-    const resultingArray = sortingFunction();
-    drawPhoto(resultingArray);
+    const selectedPhotos = sortingFunction();
+    drawPhoto(selectedPhotos);
     document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');  //снимаем выделение у предыдущего фильтра
     evt.target.classList.add('img-filters__button--active');
   };
@@ -32,8 +32,8 @@ const initFilters = function (photos, cb) {
         arr.push(randomNumber);
       }
     }
-    const resultingArray = elements.filter((item, index) => arr.includes(index));
-    return resultingArray;
+    const selectedPhotos = elements.filter((item, index) => arr.includes(index));
+    return selectedPhotos;
   };
   //обработчик случайных
   filterRandomButton.addEventListener('click', (evt) => onFilterClick(evt, cb, () => sortRandomly(photos)));
