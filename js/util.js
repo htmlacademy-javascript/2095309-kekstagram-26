@@ -13,10 +13,6 @@ function getRandomInt(min, max) {
   return min;
 }
 
-function checkLength(checkline, maxLength) {
-  return checkline.length <= maxLength;
-}
-
 //---------------плашка-сообщение с таймером----------------------------
 const alertMessage = document.querySelector('.alert-message');
 
@@ -78,5 +74,4 @@ function debounce (callback, timeoutDelay = 500) {
   };
 }
 
-export {getRandomInt, showAlert, showMessage};
-export {checkLength, debounce};
+export {getRandomInt, showAlert, showMessage, debounce};

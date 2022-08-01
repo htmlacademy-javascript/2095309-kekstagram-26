@@ -1,3 +1,7 @@
+const MIN_SCALE = 25;
+const MAX_SCALE = 100;
+const STEP_PERCENT = 25;
+
 const scaleSmallerButton = document.querySelector('.scale__control--smaller');    //+
 const scaleBiggerButton = document.querySelector('.scale__control--bigger');      //-
 const scaleValue = document.querySelector('.scale__control--value');        //
@@ -8,9 +12,6 @@ const preview = imgUploadPreview.querySelector('img');                   // пр
 
 const slider = document.querySelector('.effect-level__slider');
 const effectSliderValue = document.querySelector('.effect-level__value');     //поле для значения уровня слайдера
-
-const MIN_SCALE = 25;
-const MAX_SCALE = 100;
 
 //значения слайдера для разных фильтров
 const filters = {
@@ -54,11 +55,7 @@ const filters = {
     step: 1,
     format: {
       to: function (value) {
-        if (Number.isInteger(value)) {
-          return `invert(${value.toFixed(0)}%)`;
-        } else {
-          return `invert(${value.toFixed(1)}%)`;
-        }
+        return `invert(${value.toFixed(1)}%)`;
       },
       from: function (value) {
         return parseFloat(value);
@@ -127,8 +124,8 @@ const initImageEdit = function () {
       preview.style.transform = `scale(${scale/100})`;
     }
   };
-  scaleSmallerButton.addEventListener('click', () =>  setPercent(-25));
-  scaleBiggerButton.addEventListener('click',() => setPercent(25));
+  scaleSmallerButton.addEventListener('click', () =>  setPercent(-STEP_PERCENT));
+  scaleBiggerButton.addEventListener('click',() => setPercent(STEP_PERCENT));
 
   //-----------------------Выбор фильтра-----------------------------------------------
   //обработчик при выборе нового фильтра
@@ -143,7 +140,6 @@ const initImageEdit = function () {
       //Обновляем слайдер
       slider.noUiSlider.updateOptions(filters[evt.target.value]);
       preview.style.filter = slider.noUiSlider.get();       //устанавливаем фильтр картинке стилями (в слайдере возвращается готовый стиль)
-
     } else {
       preview.style = '';
       updateEffectSliderValue(0);
